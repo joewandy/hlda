@@ -316,7 +316,7 @@ class HierarchicalLDA(object):
         for w in word_counts:
             count = word_counts[w]
             for i in range(count): # why ?????????
-                node_weight += log( (self.eta + node.word_counts[w]) / 
+                node_weight += log( (self.eta + node.word_counts[w] + i) / 
                                     (self.eta_sum + node.total_words + total_words) )
                 total_words += 1
                 
