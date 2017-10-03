@@ -4,7 +4,7 @@ Gibbs sampler for the Hierarchical Latent Dirichlet Allocation topic model. This
 Files
 ------
 
-- hlda.py is the Gibbs sampler.
+- hlda/sampler.py is the Gibbs sampler.
 - Example notebook to test with synthetic data and the BBC Insight corpus can be found in the notebooks folder.
 
 References
