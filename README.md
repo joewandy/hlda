@@ -5,7 +5,7 @@ Files
 ------
 
 - hlda.py is the Gibbs sampler.
-- a notebook to test with synthetic data can be found in the notebooks folder.
+- Example notebook to test with synthetic data and the BBC Insight corpus can be found in the notebooks folder.
 
 References
 -----------
