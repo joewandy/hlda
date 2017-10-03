@@ -412,15 +412,3 @@ def load_corpus(file_name):
                     doc.append(int(idx))
             corpus.append(doc)
         return corpus
-
-def main():
-
-    vocab = load_vocab('/Users/joewandy/Dropbox/Analysis/hLDA/data/bbc_business_corpus.mallet.vocab.txt')
-    corpus = load_corpus('/Users/joewandy/Dropbox/Analysis/hLDA/data/bbc_business_corpus.mallet.docs.txt')
-    hlda = HierarchicalLDA(corpus, vocab)
-
-    n_samples = 1000
-    hlda.estimate(n_samples, display_topics=50)
-
-if __name__ == "__main__":
-    main()
