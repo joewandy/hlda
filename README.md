@@ -1,6 +1,3 @@
-# hlda
-Gibbs sampler for the Hierarchical Latent Dirichlet Allocation topic model. This is based on the hLDA implementation from [Mallet](http://mallet.cs.umass.edu/topics.php), having a fixed depth on the nCRP tree.
-
 Hierarchical Latent Dirichlet Allocation
 ----------------------------------------
 
@@ -14,5 +11,11 @@ data collections. The hLDA model combines this prior with a likelihood that is b
 Implementation
 --------------
 
-- [hlda/sampler.py](hlda/sampler.py) is the Gibbs sampler.
+- [hlda/sampler.py](hlda/sampler.py) is the Gibbs sampler for hLDA inference, based on the implementation from [Mallet](http://mallet.cs.umass.edu/topics.php) having a fixed depth on the nCRP tree.
+
+
+Installation
+------------
+
+- Simply use `pip install hlda` to install the package.
 - An example notebook that infers the hierarchical topics on the BBC Insight corpus can be found in [notebooks/bbc_test.ipynb](notebooks/bbc_test.ipynb).
