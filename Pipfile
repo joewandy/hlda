@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+numpy = "*"
+pandas = "*"
+matplotlib = "*"
+
+[dev-packages]
+jupyterlab = "*"
+twine = "*"
+
+[requires]
+python_version = "3"
