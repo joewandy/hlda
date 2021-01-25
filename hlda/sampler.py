@@ -200,7 +200,7 @@ class HierarchicalLDA(object):
             if (s > 0) and ((s+1) % display_topics == 0):
                 print(f" {s+1}")
                 self.print_nodes(n_words, with_weights)
-                print
+#                 print
 
     def sample_path(self, d):
 
@@ -384,7 +384,7 @@ class HierarchicalLDA(object):
         out = '    ' * indent
         out += 'topic=%d level=%d (documents=%d): ' % (node.node_id, node.level, node.customers)
         out += node.get_top_words(n_words, with_weights)
-        print out
+        print(out)
         for child in node.children:
             self.print_node(child, indent+1, n_words, with_weights)
 
