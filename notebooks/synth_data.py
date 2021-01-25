@@ -49,7 +49,7 @@ class HldaDataGenerator(object):
         def generate_input_df(self, n_topics, vocab_size, document_length, n_docs, 
                               vocab_prefix=None, df_outfile=None, vocab_outfile=None):
                         
-            print "Generating input DF"
+            print("Generating input DF")
                         
             # word_dists is the topic x document_length matrix
             word_dists = self.generate_word_dists(n_topics, vocab_size, document_length)                        
@@ -61,14 +61,14 @@ class HldaDataGenerator(object):
 
             df = DataFrame(docs)
             df = df.transpose()
-            print df.shape            
+            print(df.shape )           
             if self.make_plot:            
                 self._plot_nicely(df, 'Documents X Terms', 'Terms', 'Docs')
             
             if df_outfile is not None:
                 df.to_csv(df_outfile)        
 
-            print "Generating vocabularies"
+            print("Generating vocabularies")
             vocab = []
 
             # add new words
