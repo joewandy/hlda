@@ -1,6 +1,8 @@
 Hierarchical Latent Dirichlet Allocation
 ----------------------------------------
 
+**Note: this repository should only be used for education purpose. For production use, I'd recommend using https://github.com/bab2min/tomotopy which is more production-ready**
+
 Hierarchical Latent Dirichlet Allocation (hLDA) addresses the problem of learning topic hierarchies from data. The model relies on a non-parametric prior called the nested Chinese restaurant process, which allows for arbitrarily large branching factors and readily accommodates growing
 data collections. The hLDA model combines this prior with a likelihood that is based on a hierarchical variant of latent Dirichlet allocation.
 
@@ -19,3 +21,4 @@ Installation
 
 - Simply use `pip install hlda` to install the package.
 - An example notebook that infers the hierarchical topics on the BBC Insight corpus can be found in [notebooks/bbc_test.ipynb](notebooks/bbc_test.ipynb).
+
