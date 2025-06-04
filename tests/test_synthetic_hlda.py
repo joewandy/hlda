@@ -1,5 +1,6 @@
 import os
 import sys
+from importlib import import_module
 
 import numpy as np
 
@@ -7,7 +8,7 @@ TEST_DIR = os.path.dirname(__file__)
 ROOT = os.path.abspath(os.path.join(TEST_DIR, ".."))
 sys.path.insert(0, ROOT)
 sys.path.insert(0, os.path.join(ROOT, "src"))
-from hlda.sampler import HierarchicalLDA
+HierarchicalLDA = import_module("hlda.sampler").HierarchicalLDA
 
 
 def generate_corpus(n_topics, vocab_size, doc_len, n_docs, alpha=0.5, seed=0):
@@ -39,11 +40,21 @@ def test_hlda_runs_on_synthetic_data():
     n_docs = 5
     corpus, vocab = generate_corpus(n_topics, vocab_size, doc_len, n_docs)
 
-    hlda = HierarchicalLDA(corpus, vocab, alpha=1.0, gamma=1.0, eta=1.0, num_levels=3, seed=0, verbose=False)
+    hlda = HierarchicalLDA(
+        corpus,
+        vocab,
+        alpha=1.0,
+        gamma=1.0,
+        eta=1.0,
+        num_levels=3,
+        seed=0,
+        verbose=False,
+    )
     hlda.estimate(2, display_topics=2, n_words=3, with_weights=False)
 
     assert len(hlda.document_leaves) == n_docs
     assert hlda.root_node.customers == n_docs
+
 
 def test_tree_invariants_during_sampling():
     n_topics = 3
