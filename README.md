@@ -56,6 +56,13 @@ The easiest way to get started is by using the sample BBC dataset provided in th
 python scripts/run_bbc_demo.py --data-dir data/bbc/tech --iterations 20
 ```
 
+If you installed the package from PyPI you can run the same demo via the
+`hlda-demo` command:
+
+```bash
+hlda-demo --data-dir data/bbc/tech --iterations 20
+```
+
 If you make use of the BBC dataset, please cite the publication by Greene and
 Cunningham (2006) as detailed in [`CITATION.cff`](CITATION.cff).
 
