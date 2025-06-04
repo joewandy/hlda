@@ -311,13 +311,30 @@ class HierarchicalLDA(object):
 
             for w in word_counts:
                 count = word_counts[w]
-                for i in range(count):  # why ?????????
-                    new_topic_weights[level] += log((self.eta + i) / (self.eta_sum + total_tokens))
+                for i in range(count):  # iterate over each occurrence
+                    new_topic_weights[level] += log(
+                        (self.eta + i) / (self.eta_sum + total_tokens)
+                    )
                     total_tokens += 1
 
-        self.calculate_word_likelihood(node_weights, self.root_node, 0.0, level_word_counts, new_topic_weights, 0)
+        self.calculate_word_likelihood(
+            node_weights,
+            self.root_node,
+            0.0,
+            level_word_counts,
+            new_topic_weights,
+            0,
+        )
 
-    def calculate_word_likelihood(self, node_weights, node, weight, level_word_counts, new_topic_weights, level):
+    def calculate_word_likelihood(
+        self,
+        node_weights,
+        node,
+        weight,
+        level_word_counts,
+        new_topic_weights,
+        level,
+    ):
 
         # first calculate the likelihood of the words at this level, given this topic
         node_weight = 0.0
@@ -326,7 +343,7 @@ class HierarchicalLDA(object):
 
         for w in word_counts:
             count = word_counts[w]
-            for i in range(count): # why ?????????
+            for i in range(count):  # iterate over each occurrence
                 node_weight += log( (self.eta + node.word_counts[w] + i) /
                                     (self.eta_sum + node.total_words + total_words) )
                 total_words += 1
