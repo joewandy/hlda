@@ -1,3 +1,18 @@
+"""Gibbs sampler for the Hierarchical LDA model.
+
+This module implements a simple Gibbs sampler for hierarchical Latent Dirichlet
+Allocation (hLDA). The algorithm follows the nested Chinese restaurant process
+described in the original hLDA papers:
+
+* Blei et al., "Hierarchical Topic Models and the Nested Chinese Restaurant Process".
+* Griffiths et al.,
+  "The Nested Chinese Restaurant Process and Bayesian"
+  " Nonparametric Inference of Topic Hierarchies".
+
+It provides helper functions for loading data and the :class:`HierarchicalLDA`
+sampler.
+"""
+
 import csv
 from math import log
 import sys
@@ -121,6 +136,38 @@ class NCRPNode(object):
         return output
 
 class HierarchicalLDA(object):
+    """Collapsed Gibbs sampler for hierarchical LDA.
+
+    Parameters
+    ----------
+    corpus : Sequence[Sequence[int]]
+        Collection of documents encoded as lists of token ids.
+    vocab : Sequence[str]
+        Mapping from token id to word.
+    alpha : float, optional
+        Dirichlet prior for document-topic distributions.
+    gamma : float, optional
+        Parameter of the nested CRP controlling branching behaviour.
+    eta : float, optional
+        Dirichlet prior for topic-word distributions.
+    seed : int, optional
+        Seed for the internal random number generator.
+    verbose : bool, optional
+        Whether to print progress during sampling.
+    num_levels : int, optional
+        Depth of the topic hierarchy.
+
+    Attributes
+    ----------
+    root_node : NCRPNode
+        Root of the NCRP tree representing the topic hierarchy.
+    document_leaves : dict[int, NCRPNode]
+        Mapping from document index to the leaf node currently assigned.
+    levels : ndarray
+        Array of per-word level assignments for each document.
+    random_state : RandomState
+        Random number generator used by the sampler.
+    """
 
     def __init__(self, corpus, vocab,
                  alpha=10.0, gamma=1.0, eta=0.1,
