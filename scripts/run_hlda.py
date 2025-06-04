@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Command-line utility for running hierarchical LDA on a corpus of text files."""
+"""Command-line utility for running hierarchical LDA on a corpus of text
+files."""
 
 import argparse
 import glob
@@ -124,20 +125,54 @@ def main():
     parser.add_argument(
         "--data-dir", required=True, help="Directory containing text files"
     )
-    parser.add_argument("--iterations", type=int, default=100, help="Number of Gibbs samples")
     parser.add_argument(
-        "--display-topics", type=int, default=50, help="Report topics every N iterations"
+        "--iterations",
+        type=int,
+        default=100,
+        help="Number of Gibbs samples",
     )
     parser.add_argument(
-        "--n-words", type=int, default=5, help="Number of words to display per topic"
+        "--display-topics",
+        type=int,
+        default=50,
+        help="Report topics every N iterations",
     )
     parser.add_argument(
-        "--num-levels", type=int, default=3, help="Depth of the topic hierarchy"
+        "--n-words",
+        type=int,
+        default=5,
+        help="Number of words to display per topic",
     )
-    parser.add_argument("--alpha", type=float, default=10.0, help="Alpha hyperparameter")
-    parser.add_argument("--gamma", type=float, default=1.0, help="Gamma hyperparameter")
-    parser.add_argument("--eta", type=float, default=0.1, help="Eta hyperparameter")
-    parser.add_argument("--seed", type=int, default=0, help="Random seed")
+    parser.add_argument(
+        "--num-levels",
+        type=int,
+        default=3,
+        help="Depth of the topic hierarchy",
+    )
+    parser.add_argument(
+        "--alpha",
+        type=float,
+        default=10.0,
+        help="Alpha hyperparameter",
+    )
+    parser.add_argument(
+        "--gamma",
+        type=float,
+        default=1.0,
+        help="Gamma hyperparameter",
+    )
+    parser.add_argument(
+        "--eta",
+        type=float,
+        default=0.1,
+        help="Eta hyperparameter",
+    )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=0,
+        help="Random seed",
+    )
 
     args = parser.parse_args()
     run_demo(args)

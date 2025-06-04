@@ -4,7 +4,8 @@ This module implements a simple Gibbs sampler for hierarchical Latent Dirichlet
 Allocation (hLDA). The algorithm follows the nested Chinese restaurant process
 described in the original hLDA papers:
 
-* Blei et al., "Hierarchical Topic Models and the Nested Chinese Restaurant Process".
+* Blei et al.,
+  "Hierarchical Topic Models and the Nested Chinese Restaurant Process".
 * Griffiths et al.,
   "The Nested Chinese Restaurant Process and Bayesian"
   " Nonparametric Inference of Topic Hierarchies".
@@ -53,8 +54,11 @@ class NCRPNode(object):
         parent_id = None
         if self.parent is not None:
             parent_id = self.parent.node_id
-        return 'Node=%d level=%d customers=%d total_words=%d parent=%s' % (self.node_id,
-            self.level, self.customers, self.total_words, parent_id)
+        return (
+            f"Node={self.node_id} level={self.level} "
+            f"customers={self.customers} "
+            f"total_words={self.total_words} parent={parent_id}"
+        )
 
     def add_child(self):
         ''' Adds a child to the next level of this node '''
@@ -76,12 +80,13 @@ class NCRPNode(object):
     def get_new_leaf(self):
         ''' Keeps adding nodes along the path until a leaf node is generated'''
         node = self
-        for l in range(self.level, self.num_levels-1):
+        for lvl in range(self.level, self.num_levels - 1):
             node = node.add_child()
         return node
 
     def drop_path(self):
-        ''' Removes a document from a path starting from this node (leaf) upwards '''
+        """Remove a document from a path starting at this leaf and moving
+        upwards."""
         node = self
         while node is not None:
             node.customers -= 1
@@ -103,7 +108,7 @@ class NCRPNode(object):
             node.customers += 1
 
     def select(self, gamma):
-        ''' Selects an existing child or create a new one according to the CRP '''
+        """Select an existing child or create a new one using the CRP."""
 
         weights = np.zeros(len(self.children)+1)
         weights[0] = float(gamma) / (gamma+self.customers)
@@ -134,6 +139,7 @@ class NCRPNode(object):
             else:
                 output += '%s, ' % word
         return output
+
 
 class HierarchicalLDA(object):
     """Collapsed Gibbs sampler for hierarchical LDA.
@@ -178,9 +184,12 @@ class HierarchicalLDA(object):
 
         self.corpus = corpus
         self.vocab = vocab
-        self.alpha = alpha  # smoothing on doc-topic distributions
-        self.gamma = gamma  # "imaginary" customers at the next, as yet unused table
-        self.eta = eta      # smoothing on topic-word distributions
+        # smoothing on doc-topic distributions
+        self.alpha = alpha
+        # "imaginary" customers at the next, as yet unused table
+        self.gamma = gamma
+        # smoothing on topic-word distributions
+        self.eta = eta
 
         self.seed = seed
         self.random_state = RandomState(seed)
@@ -208,17 +217,21 @@ class HierarchicalLDA(object):
             self.vocab,
             random_state=self.random_state,
         )
-        self.document_leaves = {}                                   # currently selected path (ie leaf node) through the NCRP tree
-        self.levels = np.zeros(self.num_documents, dtype=object) # indexed < doc, token >
+        # currently selected path (i.e. leaf node) through the NCRP tree
+        self.document_leaves = {}
+        # indexed < doc, token >
+        self.levels = np.zeros(self.num_documents, dtype=object)
         for d in range(len(self.corpus)):
 
             # populate nodes into the path of this document
             doc = self.corpus[d]
             doc_len = len(doc)
             path[0] = self.root_node
-            self.root_node.customers += 1 # always add to the root node first
+            # always add to the root node first
+            self.root_node.customers += 1
             for level in range(1, self.num_levels):
-                # at each level, a node is selected by its parent node based on the CRP prior
+                # at each level, a node is selected by its parent node based on
+                # the CRP prior
                 parent_node = path[level-1]
                 level_node = parent_node.select(self.gamma)
                 level_node.customers += 1
@@ -228,7 +241,8 @@ class HierarchicalLDA(object):
             leaf_node = path[self.num_levels-1]
             self.document_leaves[d] = leaf_node
 
-            # randomly assign each word in the document to a level (node) along the path
+            # randomly assign each word in the document to a level (node)
+            # along the path
             self.levels[d] = np.zeros(doc_len, dtype=int)
             for n in range(doc_len):
                 w = doc[n]
@@ -238,7 +252,13 @@ class HierarchicalLDA(object):
                 random_node.total_words += 1
                 self.levels[d][n] = random_level
 
-    def estimate(self, num_samples, display_topics=50, n_words=5, with_weights=True):
+    def estimate(
+        self,
+        num_samples,
+        display_topics=50,
+        n_words=5,
+        with_weights=True,
+    ):
 
         print('HierarchicalLDA sampling\n')
         for s in range(num_samples):
@@ -261,7 +281,8 @@ class HierarchicalLDA(object):
         # define a path starting from the leaf node of this doc
         path = np.zeros(self.num_levels, dtype=object)
         node = self.document_leaves[d]
-        for level in range(self.num_levels-1, -1, -1): # e.g. [3, 2, 1, 0] for num_levels = 4
+        for level in range(self.num_levels - 1, -1, -1):
+            # e.g. [3, 2, 1, 0] for num_levels = 4
             path[level] = node
             node = node.parent
 
@@ -286,7 +307,7 @@ class HierarchicalLDA(object):
         doc = self.corpus[d]
 
         # remove doc from path
-        for n in range(len(doc)): # for each word in the doc
+        for n in range(len(doc)):  # for each word in the doc
 
             # count the word at each level
             level = doc_levels[n]
@@ -311,7 +332,8 @@ class HierarchicalLDA(object):
 
         nodes = np.array(list(node_weights.keys()))
         weights = np.array([node_weights[node] for node in nodes])
-        weights = np.exp(weights - np.max(weights)) # normalise so the largest weight is 1
+        # normalise so the largest weight is 1
+        weights = np.exp(weights - np.max(weights))
         weights = weights / np.sum(weights)
 
         choice = self.random_state.multinomial(1, weights).argmax()
@@ -322,11 +344,12 @@ class HierarchicalLDA(object):
             node = node.get_new_leaf()
 
         # add the doc back to the path
-        node.add_path()                     # add a customer to the path
-        self.document_leaves[d] = node      # store the leaf node for this doc
+        node.add_path()  # add a customer to the path
+        self.document_leaves[d] = node  # store the leaf node for this doc
 
         # add the words
-        for level in range(self.num_levels-1, -1, -1): # e.g. [3, 2, 1, 0] for num_levels = 4
+        for level in range(self.num_levels - 1, -1, -1):
+            # e.g. [3, 2, 1, 0] for num_levels = 4
             word_counts = level_word_counts[level]
             for w in word_counts:
                 node.word_counts[w] += word_counts[w]
@@ -383,7 +406,8 @@ class HierarchicalLDA(object):
         level,
     ):
 
-        # first calculate the likelihood of the words at this level, given this topic
+        # first calculate the likelihood of the words at this level
+        # given this topic
         node_weight = 0.0
         word_counts = level_word_counts[level]
         total_words = 0
@@ -391,14 +415,22 @@ class HierarchicalLDA(object):
         for w in word_counts:
             count = word_counts[w]
             for i in range(count):  # iterate over each occurrence
-                node_weight += log( (self.eta + node.word_counts[w] + i) /
-                                    (self.eta_sum + node.total_words + total_words) )
+                node_weight += log(
+                    (self.eta + node.word_counts[w] + i)
+                    / (self.eta_sum + node.total_words + total_words)
+                )
                 total_words += 1
 
         # propagate that weight to the child nodes
         for child in node.children:
-            self.calculate_word_likelihood(node_weights, child, weight + node_weight,
-                                           level_word_counts, new_topic_weights, level+1)
+            self.calculate_word_likelihood(
+                node_weights,
+                child,
+                weight + node_weight,
+                level_word_counts,
+                new_topic_weights,
+                level + 1,
+            )
 
         # finally if this is an internal node, add the weight of a new path
         level += 1
@@ -421,7 +453,8 @@ class HierarchicalLDA(object):
         # get the leaf node and populate the path
         path = np.zeros(self.num_levels, dtype=object)
         node = self.document_leaves[d]
-        for level in range(self.num_levels-1, -1, -1): # e.g. [3, 2, 1, 0] for num_levels = 4
+        for level in range(self.num_levels - 1, -1, -1):
+            # e.g. [3, 2, 1, 0] for num_levels = 4
             path[level] = node
             node = node.parent
 
@@ -440,9 +473,11 @@ class HierarchicalLDA(object):
 
             # pick new level
             for level in range(self.num_levels):
-                level_weights[level] = (self.alpha + level_counts[level]) *                     \
-                    (self.eta + path[level].word_counts[w]) /                                   \
-                    (self.eta_sum + path[level].total_words)
+                level_weights[level] = (
+                    (self.alpha + level_counts[level])
+                    * (self.eta + path[level].word_counts[w])
+                    / (self.eta_sum + path[level].total_words)
+                )
             level_weights = level_weights / np.sum(level_weights)
             level = self.random_state.multinomial(1, level_weights).argmax()
 
@@ -457,12 +492,16 @@ class HierarchicalLDA(object):
         self.print_node(self.root_node, 0, n_words, with_weights)
 
     def print_node(self, node, indent, n_words, with_weights):
-        out = '    ' * indent
-        out += 'topic=%d level=%d (documents=%d): ' % (node.node_id, node.level, node.customers)
+        out = "    " * indent
+        out += (
+            f"topic={node.node_id} level={node.level} "
+            f"(documents={node.customers}): "
+        )
         out += node.get_top_words(n_words, with_weights)
         print(out)
         for child in node.children:
             self.print_node(child, indent+1, n_words, with_weights)
+
 
 def load_vocab(file_name):
     with open(file_name, 'r', encoding='utf-8', newline='') as f:
@@ -473,6 +512,7 @@ def load_vocab(file_name):
             stripped = word.strip()
             vocab.append(stripped)
         return vocab
+
 
 def load_corpus(file_name):
     with open(file_name, 'r', encoding='utf-8', newline='') as f:
