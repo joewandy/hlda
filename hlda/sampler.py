@@ -148,14 +148,14 @@ class HierarchicalLDA(object):
         #         print 'doc_%d = %s' % (d, words)
 
         # initialise a single path
-        path = np.zeros(self.num_levels, dtype=np.object)
+        path = np.zeros(self.num_levels, dtype=object)
 
         # initialize and fill the topic pointer arrays for
         # every document. Set everything to the single path that
         # we added earlier.
         self.root_node = NCRPNode(self.num_levels, self.vocab)
         self.document_leaves = {}                                   # currently selected path (ie leaf node) through the NCRP tree
-        self.levels = np.zeros(self.num_documents, dtype=np.object) # indexed < doc, token >
+        self.levels = np.zeros(self.num_documents, dtype=object) # indexed < doc, token >
         for d in range(len(self.corpus)):
 
             # populate nodes into the path of this document
@@ -175,7 +175,7 @@ class HierarchicalLDA(object):
             self.document_leaves[d] = leaf_node
 
             # randomly assign each word in the document to a level (node) along the path
-            self.levels[d] = np.zeros(doc_len, dtype=np.int)
+            self.levels[d] = np.zeros(doc_len, dtype=int)
             for n in range(doc_len):
                 w = doc[n]
                 random_level = self.random_state.randint(self.num_levels)
@@ -205,7 +205,7 @@ class HierarchicalLDA(object):
     def sample_path(self, d):
 
         # define a path starting from the leaf node of this doc
-        path = np.zeros(self.num_levels, dtype=np.object)
+        path = np.zeros(self.num_levels, dtype=object)
         node = self.document_leaves[d]
         for level in range(self.num_levels-1, -1, -1): # e.g. [3, 2, 1, 0] for num_levels = 4
             path[level] = node
@@ -338,12 +338,12 @@ class HierarchicalLDA(object):
 
         # initialise level counts
         doc_levels = self.levels[d]
-        level_counts = np.zeros(self.num_levels, dtype=np.int)
+        level_counts = np.zeros(self.num_levels, dtype=int)
         for c in doc_levels:
             level_counts[c] += 1
 
         # get the leaf node and populate the path
-        path = np.zeros(self.num_levels, dtype=np.object)
+        path = np.zeros(self.num_levels, dtype=object)
         node = self.document_leaves[d]
         for level in range(self.num_levels-1, -1, -1): # e.g. [3, 2, 1, 0] for num_levels = 4
             path[level] = node
