@@ -60,16 +60,13 @@ class NCRPNode(object):
         return node
 
     def drop_path(self):
-        ''' Removes a document from a path starting from this node '''
+        ''' Removes a document from a path starting from this node (leaf) upwards '''
         node = self
-        node.customers -= 1
-        if node.customers == 0:
-            node.parent.remove(node)
-        for level in range(1, self.num_levels): # skip the root
-            node = node.parent
+        while node is not None:
             node.customers -= 1
-            if node.customers == 0:
+            if node.customers == 0 and node.parent is not None:
                 node.parent.remove(node)
+            node = node.parent
 
     def remove(self, node):
         ''' Removes a child node '''
@@ -281,12 +278,17 @@ class HierarchicalLDA(object):
 
     def calculate_ncrp_prior(self, node_weights, node, weight):
         ''' Calculates the prior on the path according to the nested CRP '''
-
         for child in node.children:
-            child_weight = log( float(child.customers) / (node.customers + self.gamma) )
-            self.calculate_ncrp_prior(node_weights, child, weight + child_weight)
+            child_weight = log(float(child.customers) /
+                               (node.customers + self.gamma))
+            self.calculate_ncrp_prior(node_weights, child,
+                                      weight + child_weight)
 
-        node_weights[node] = weight + log( self.gamma / (node.customers + self.gamma))
+        if node.is_leaf():
+            node_weights[node] = weight
+        else:
+            node_weights[node] = weight + log(self.gamma /
+                                              (node.customers + self.gamma))
 
     def calculate_doc_likelihood(self, node_weights, level_word_counts):
 
