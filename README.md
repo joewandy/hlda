@@ -44,6 +44,7 @@ Alternatively, to develop locally, clone this repository and install it in edita
 git clone https://github.com/joewandy/hlda.git
 cd hlda
 pip install -e .
+pre-commit install
 ```
 
 ## Usage
