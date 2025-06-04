@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Command-line demo for hierarchical LDA using the BBC dataset."""
+"""Command-line utility for running hierarchical LDA on a corpus of text files."""
 
 import argparse
 import glob
@@ -119,10 +119,10 @@ def run_demo(args):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Run hierarchical LDA on the BBC sample dataset"
+        description="Run hierarchical LDA on a directory of text documents"
     )
     parser.add_argument(
-        "--data-dir", default="bbc/tech", help="Directory containing BBC .txt files"
+        "--data-dir", required=True, help="Directory containing text files"
     )
     parser.add_argument("--iterations", type=int, default=100, help="Number of Gibbs samples")
     parser.add_argument(

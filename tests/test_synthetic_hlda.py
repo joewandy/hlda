@@ -4,7 +4,9 @@ import sys
 import numpy as np
 
 TEST_DIR = os.path.dirname(__file__)
-sys.path.append(os.path.join(TEST_DIR, ".."))
+ROOT = os.path.abspath(os.path.join(TEST_DIR, ".."))
+sys.path.insert(0, ROOT)
+sys.path.insert(0, os.path.join(ROOT, "src"))
 from hlda.sampler import HierarchicalLDA
 
 

@@ -11,6 +11,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent"
 ]
+packages = [{include = "hlda", from = "src"}]
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.13"
