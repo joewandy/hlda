@@ -2,10 +2,13 @@ import argparse
 import os
 import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-from scripts import bbc_demo
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, ROOT)
+sys.path.insert(0, os.path.join(ROOT, 'src'))
 
-BBC_DIR = os.path.join(os.path.dirname(__file__), '..', 'bbc', 'tech')
+from scripts import run_hlda
+
+BBC_DIR = os.path.join(ROOT, 'data', 'bbc', 'tech')
 
 
 def test_bbc_demo_deterministic():
@@ -20,7 +23,7 @@ def test_bbc_demo_deterministic():
         eta=0.1,
         seed=0,
     )
-    hlda = bbc_demo.run_demo(args)
+    hlda = run_hlda.run_demo(args)
     assert hlda.root_node.total_nodes == 15
     assert hlda.root_node.customers == 401
     assert hlda.num_documents == 401
