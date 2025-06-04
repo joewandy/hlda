@@ -465,7 +465,7 @@ class HierarchicalLDA(object):
             self.print_node(child, indent+1, n_words, with_weights)
 
 def load_vocab(file_name):
-    with open(file_name, 'rb') as f:
+    with open(file_name, 'r', encoding='utf-8', newline='') as f:
         vocab = []
         reader = csv.reader(f)
         for row in reader:
@@ -475,7 +475,7 @@ def load_vocab(file_name):
         return vocab
 
 def load_corpus(file_name):
-    with open(file_name, 'rb') as f:
+    with open(file_name, 'r', encoding='utf-8', newline='') as f:
         corpus = []
         reader = csv.reader(f)
         for row in reader:
