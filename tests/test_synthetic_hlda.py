@@ -42,3 +42,35 @@ def test_hlda_runs_on_synthetic_data():
 
     assert len(hlda.document_leaves) == n_docs
     assert hlda.root_node.customers == n_docs
+
+def test_tree_invariants_during_sampling():
+    n_topics = 3
+    vocab_size = 9
+    doc_len = 20
+    n_docs = 5
+    corpus, vocab = generate_corpus(n_topics, vocab_size, doc_len, n_docs)
+
+    hlda = HierarchicalLDA(corpus, vocab, alpha=1.0, gamma=1.0, eta=1.0,
+                           num_levels=3, seed=0, verbose=False)
+
+    total_nodes_history = []
+    root_cust_history = []
+    for _ in range(20):
+        for d in range(n_docs):
+            hlda.sample_path(d)
+        for d in range(n_docs):
+            hlda.sample_topics(d)
+        total_nodes_history.append(hlda.root_node.total_nodes)
+        root_cust_history.append(hlda.root_node.customers)
+        for leaf in hlda.document_leaves.values():
+            assert leaf.level == hlda.num_levels - 1
+            node = leaf
+            depth = 0
+            while node.parent is not None:
+                node = node.parent
+                depth += 1
+            assert depth == hlda.num_levels - 1
+
+    assert all(cust == n_docs for cust in root_cust_history)
+    diffs = np.diff(total_nodes_history)
+    assert (diffs > 0).any() and (diffs < 0).any()
