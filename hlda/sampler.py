@@ -43,7 +43,13 @@ class NCRPNode(object):
 
     def add_child(self):
         ''' Adds a child to the next level of this node '''
-        node = NCRPNode(self.num_levels, self.vocab, parent=self, level=self.level+1)
+        node = NCRPNode(
+            self.num_levels,
+            self.vocab,
+            parent=self,
+            level=self.level + 1,
+            random_state=self.random_state,
+        )
         self.children.append(node)
         NCRPNode.total_nodes += 1
         return node
@@ -150,7 +156,11 @@ class HierarchicalLDA(object):
         # initialize and fill the topic pointer arrays for
         # every document. Set everything to the single path that
         # we added earlier.
-        self.root_node = NCRPNode(self.num_levels, self.vocab)
+        self.root_node = NCRPNode(
+            self.num_levels,
+            self.vocab,
+            random_state=self.random_state,
+        )
         self.document_leaves = {}                                   # currently selected path (ie leaf node) through the NCRP tree
         self.levels = np.zeros(self.num_documents, dtype=object) # indexed < doc, token >
         for d in range(len(self.corpus)):
