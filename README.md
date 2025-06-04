@@ -55,6 +55,9 @@ The easiest way to get started is by using the sample BBC dataset provided in th
 python scripts/run_bbc_demo.py --data-dir data/bbc/tech --iterations 20
 ```
 
+If you make use of the BBC dataset, please cite the publication by Greene and
+Cunningham (2006) as detailed in [`CITATION.cff`](CITATION.cff).
+
 A Jupyter notebook with the same workflow is available at
 [`notebooks/bbc_test.ipynb`](notebooks/bbc_test.ipynb). The notebook walks through loading the
 corpus, running the sampler and inspecting the learned hierarchy.
