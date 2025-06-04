@@ -55,6 +55,12 @@ The easiest way to get started is by using the sample BBC dataset provided in th
 python scripts/run_bbc_demo.py --data-dir data/bbc/tech --iterations 20
 ```
 
+If installed via `pip`, the same command is available as a console script:
+
+```bash
+hlda-demo --data-dir data/bbc/tech --iterations 20
+```
+
 A Jupyter notebook with the same workflow is available at
 [`notebooks/bbc_test.ipynb`](notebooks/bbc_test.ipynb). The notebook walks through loading the
 corpus, running the sampler and inspecting the learned hierarchy.
