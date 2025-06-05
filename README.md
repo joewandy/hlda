@@ -83,6 +83,36 @@ hlda = HierarchicalLDA(corpus, vocab, alpha=1.0, gamma=1.0, eta=0.1,
 hlda.estimate(iterations=50, display_topics=10)
 ```
 
+### Integration with scikit-learn
+
+The package provides a `HierarchicalLDAEstimator` that follows the scikit-learn API. This allows using the sampler inside a standard `Pipeline`.
+
+```python
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.preprocessing import FunctionTransformer
+from sklearn.pipeline import Pipeline
+from hlda.sklearn_wrapper import HierarchicalLDAEstimator
+
+vectorizer = CountVectorizer()
+prep = FunctionTransformer(
+    lambda X: (
+        [[i for i, c in enumerate(row) for _ in range(int(c))] for row in X.toarray()],
+        list(vectorizer.get_feature_names_out()),
+    ),
+    validate=False,
+)
+
+pipeline = Pipeline([
+    ("vect", vectorizer),
+    ("prep", prep),
+    ("hlda", HierarchicalLDAEstimator(num_levels=3, iterations=10, seed=0)),
+])
+
+pipeline.fit(documents)
+assignments = pipeline.transform(documents)
+```
+
+
 ## Running the tests
 
 The repository includes a small test suite that checks the sampler on both the BBC
