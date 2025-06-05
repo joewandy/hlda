@@ -63,6 +63,13 @@ If you installed the package from PyPI you can run the same demo via the
 hlda-demo --data-dir data/bbc/tech --iterations 20
 ```
 
+To write the learned hierarchy to disk in JSON format, pass
+`--export-tree <file>` when running the script:
+
+```bash
+python scripts/run_hlda.py --data-dir data/bbc/tech --export-tree tree.json
+```
+
 If you make use of the BBC dataset, please cite the publication by Greene and
 Cunningham (2006) as detailed in [`CITATION.cff`](CITATION.cff).
 

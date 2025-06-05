@@ -4,6 +4,7 @@ files."""
 
 import argparse
 import glob
+import json
 import os
 import re
 
@@ -115,6 +116,10 @@ def run_demo(args):
     print("\nFinal topic hierarchy:")
     hlda.print_nodes(args.n_words, with_weights=False)
 
+    if getattr(args, "export_tree", None):
+        with open(args.export_tree, "w", encoding="utf-8") as f:
+            json.dump(hlda.export_tree(), f, indent=2)
+
     return hlda
 
 
@@ -172,6 +177,11 @@ def main():
         type=int,
         default=0,
         help="Random seed",
+    )
+    parser.add_argument(
+        "--export-tree",
+        metavar="FILE",
+        help="Write the final hierarchy as JSON to FILE",
     )
 
     args = parser.parse_args()

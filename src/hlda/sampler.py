@@ -502,6 +502,20 @@ class HierarchicalLDA(object):
         for child in node.children:
             self.print_node(child, indent+1, n_words, with_weights)
 
+    def export_tree(self):
+        """Return the current hierarchy as a JSON‑serialisable structure."""
+
+        def visit(node):
+            return {
+                "id": int(node.node_id),
+                "level": int(node.level),
+                "customers": int(node.customers),
+                "total_words": int(node.total_words),
+                "children": [visit(child) for child in node.children],
+            }
+
+        return visit(self.root_node)
+
 
 def load_vocab(file_name):
     with open(file_name, 'r', encoding='utf-8', newline='') as f:
