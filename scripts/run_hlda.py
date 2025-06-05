@@ -13,7 +13,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from hlda.sklearn_wrapper import HierarchicalLDAEstimator
 
 
-# A small set of English stopwords. This keeps the demo self-contained.
+# A small set of English stopwords. This keeps the script self-contained.
 STOPWORDS = {
     "the",
     "and",
