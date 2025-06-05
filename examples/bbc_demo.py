@@ -4,17 +4,21 @@
 import argparse
 import os
 
-from scripts.run_hlda import run_demo
+from scripts.run_hlda import run_hlda
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Run hierarchical LDA on the BBC tech dataset"
+        description=("Run hierarchical LDA on the BBC tech dataset"),
     )
     parser.add_argument(
         "--data-dir",
         default=os.path.join(
-            os.path.dirname(__file__), "..", "data", "bbc", "tech"
+            os.path.dirname(__file__),
+            "..",
+            "data",
+            "bbc",
+            "tech",
         ),
         help="Directory containing BBC .txt files",
     )
@@ -68,7 +72,7 @@ def main():
     )
 
     args = parser.parse_args()
-    run_demo(args)
+    run_hlda(args)
 
 
 if __name__ == "__main__":

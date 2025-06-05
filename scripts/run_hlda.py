@@ -8,10 +8,12 @@ import json
 import os
 import re
 
+from sklearn.feature_extraction.text import CountVectorizer
 
-from hlda.sampler import HierarchicalLDA
+from hlda.sklearn_wrapper import HierarchicalLDAEstimator
 
-# A small set of English stopwords. This keeps the demo self-contained.
+
+# A small set of English stopwords. This keeps the script self-contained.
 STOPWORDS = {
     "the",
     "and",
@@ -91,20 +93,29 @@ def convert_corpus(corpus, index):
     return new_corpus
 
 
-def run_demo(args):
+def run_hlda(args):
     corpus = load_documents(args.data_dir)
-    vocab, index = build_vocab(corpus)
-    int_corpus = convert_corpus(corpus, index)
+    documents = [" ".join(doc) for doc in corpus]
 
-    hlda = HierarchicalLDA(
-        int_corpus,
-        vocab,
+    vectorizer = CountVectorizer(
+        stop_words=list(STOPWORDS),
+        token_pattern=r"[a-zA-Z]{3,}",
+    )
+    dtm = vectorizer.fit_transform(documents)
+    vocab = list(vectorizer.get_feature_names_out())
+
+    estimator = HierarchicalLDAEstimator(
         alpha=args.alpha,
         gamma=args.gamma,
         eta=args.eta,
         num_levels=args.num_levels,
+        iterations=0,
         seed=args.seed,
+        verbose=False,
+        vocab=vocab,
     )
+    estimator.fit(dtm)
+    hlda = estimator.model_
 
     hlda.estimate(
         args.iterations,
@@ -128,7 +139,9 @@ def main():
         description="Run hierarchical LDA on a directory of text documents"
     )
     parser.add_argument(
-        "--data-dir", required=True, help="Directory containing text files"
+        "--data-dir",
+        required=True,
+        help="Directory containing text files",
     )
     parser.add_argument(
         "--iterations",
@@ -185,7 +198,7 @@ def main():
     )
 
     args = parser.parse_args()
-    run_demo(args)
+    run_hlda(args)
 
 
 if __name__ == "__main__":

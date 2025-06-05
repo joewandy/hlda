@@ -26,7 +26,7 @@ implementation but with a simplified interface and a fixed depth for the tree.
 Key features include:
 
 - **Python 3.11+** support with minimal third‑party dependencies.
-- A small set of helper scripts and notebooks demonstrating how to run the sampler.
+- A small set of example scripts demonstrating how to run the sampler.
 - Utilities for visualising the resulting topic hierarchy.
 - Test suite for verifying the sampler on synthetic data and a small BBC corpus.
 
@@ -53,14 +53,14 @@ The easiest way to get started is by using the sample BBC dataset provided in th
 `data/` directory. You can run the full demonstration from the command line:
 
 ```bash
-python scripts/run_bbc_demo.py --data-dir data/bbc/tech --iterations 20
+python examples/bbc_demo.py --data-dir data/bbc/tech --iterations 20
 ```
 
 If you installed the package from PyPI you can run the same demo via the
-`hlda-demo` command:
+`hlda-run` command:
 
 ```bash
-hlda-demo --data-dir data/bbc/tech --iterations 20
+hlda-run --data-dir data/bbc/tech --iterations 20
 ```
 
 To write the learned hierarchy to disk in JSON format, pass
@@ -73,9 +73,8 @@ python scripts/run_hlda.py --data-dir data/bbc/tech --export-tree tree.json
 If you make use of the BBC dataset, please cite the publication by Greene and
 Cunningham (2006) as detailed in [`CITATION.cff`](CITATION.cff).
 
-A Jupyter notebook with the same workflow is available at
-[`notebooks/bbc_test.ipynb`](notebooks/bbc_test.ipynb). The notebook walks through loading the
-corpus, running the sampler and inspecting the learned hierarchy.
+Example scripts for the BBC dataset and synthetic data are available in the
+[`examples/`](examples) directory.
 
 Within Python you can also construct the sampler directly:
 
