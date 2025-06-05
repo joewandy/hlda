@@ -29,7 +29,7 @@ def test_export_tree(tmp_path):
         export_tree=str(output_file),
     )
 
-    run_hlda.run_demo(args)
+    run_hlda.run_hlda(args)
     data = json.loads(output_file.read_text())
 
     assert data["level"] == 0
