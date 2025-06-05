@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: >
+  If you use the sample BBC dataset included with this project,
+  please cite the following publication:
+  Greene, D., and Cunningham, P. (2006). Practical Solutions to the Problem of
+  Diagonal Dominance in Kernel Document Clustering. Proceedings of the
+  23rd International Conference on Machine Learning.
+title: "BBC News Dataset"
+authors:
+  - family-names: Greene
+    given-names: Derek
+  - family-names: Cunningham
+    given-names: P.
+version: "1.0"
+date-released: 2004-01-01

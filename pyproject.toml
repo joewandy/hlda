@@ -1,0 +1,47 @@
+[tool.poetry]
+name = "hlda"
+version = "0.4"
+description = "Gibbs sampler for the Hierarchical Latent Dirichlet Allocation topic model."
+authors = ["Joe Wandy <joe.wandy@glasgow.ac.uk>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/joewandy/hlda"
+keywords = ["topic modelling", "hierarchical lda"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+packages = [{include = "hlda", from = "src"}]
+
+[tool.poetry.scripts]
+hlda-run = "scripts.run_hlda:main"
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.13"
+numpy = "^2.2.6"
+pandas = "^2.2.3"
+matplotlib = "^3.10.3"
+seaborn = "^0.13.2"
+tqdm = "^4.67.1"
+scikit-learn = "^1.5.0"
+
+[tool.poetry.group.dev.dependencies]
+jupyterlab = "^4.4.3"
+ipywidgets = "^8.1.7"
+flake8 = "^7.2.0"
+autopep8 = "^2.3.2"
+pytest = "^8.4.0"
+pytest-cov = "^6.1.1"
+mkdocs = "^1.6.1"
+mkdocstrings = "^0.29.1"
+black = "^25.1.0"
+pre-commit = "^3.7.0"
+
+[tool.setuptools_scm]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 99
