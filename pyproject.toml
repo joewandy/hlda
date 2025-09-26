@@ -26,7 +26,7 @@ tqdm = "^4.67.1"
 scikit-learn = "^1.5.0"
 
 [tool.poetry.group.dev.dependencies]
-jupyterlab = "^4.4.3"
+jupyterlab = "^4.4.8"
 ipywidgets = "^8.1.7"
 flake8 = "^7.2.0"
 autopep8 = "^2.3.2"
